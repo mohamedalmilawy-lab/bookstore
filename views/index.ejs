@@ -1,0 +1,216 @@
+<%- include("layout/header") %>
+<%- include("layout/navbar") %>
+
+<!--  Hero -->
+<section id="home" class="hero-section text-white ">
+    <div class="container text-center text-md-start">
+        <div class="col-lg-6">
+            <h1 class="display-3 fw-bold mb-4">خير جليس في الزمان كتاب</h1>
+            <p class="lead mb-5">اكتشف مجموعتنا الواسعة من الكتب في جميع المجالات القيمة.</p>
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="/books" class="btn btn-primary btn-lg rounded-pill px-4">
+                    استكشف الكتب
+                </a>
+                <a href="/about" class="btn btn-outline-light btn-lg rounded-pill px-4">
+                    من نحن؟
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!--  CTA / Welcome -->
+<div class="container my-5" dir="rtl">
+<section id="about" class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <div class="shine rounded-4 shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80" class="img-fluid rounded-4" alt="About">
+                </div>
+            </div>
+            <div class="col-lg-7 ps-lg-5">
+                <% if (!user) { %>
+                    <h3 class="text-primary fw-bold mb-3">انضم إلى مجتمع القراء 🤩</h3>
+                    <p class="text-secondary fs-5" >أنشأ حسابك الآن لتتمتع بتجربة تصفح مخصصة، توصيات ذكية، وعروض حصرية على كتبك المفضلة!</p>
+                    <a href="/auth/register" class="btn btn-outline-primary btn-lg rounded-pill px-5">إنشاء حساب</a>
+                <% } else {%>
+                    <h3 class="text-primary fw-bold mb-3">أهلاً بعودتك يا <span class="text-dark"><%= user.username %></span></h3>
+                    <p class="text-secondary fs-5" >اطلع على قائمة مفضلتك</p>
+                    <a href="/favorites" class="btn btn-outline-primary btn-lg rounded-pill px-5">المفضلة</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- احدث الكتب --> 
+<div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+    <h3 class="fw-bold m-0">📚 أحدث الكتب</h3>
+    <a href="/books" class="btn btn-sm btn-outline-primary rounded-pill px-3">عرض الكل</a>
+</div>
+
+<div id="desktopBooksCarousel" class="carousel carousel-dark slide shadow-sm rounded-4 bg-light p-4 d-none d-md-block" 
+    data-bs-ride="carousel" data-bs-wrap="true"> <div class="carousel-inner">
+        <% for(let i = 0; i < latestBooks.length; i += 3) { %>
+            <div class="carousel-item <%= i === 0 ? 'active' : '' %>" data-bs-interval="5000">
+                <div class="row g-4 px-5">
+                    <% for(let j = i; j < i + 3 && j < latestBooks.length; j++) { %>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-3 bg-white hover-lift">
+                                <img src="/images/<%= latestBooks[j].cover %>" class="img-fluid mb-3 mx-auto" style="height: 180px; object-fit: contain;" alt="<%= latestBooks[j].title %>">
+                                <h6 class="fw-bold text-dark text-truncate"><%= latestBooks[j].title %></h6>
+                                <p class="text-muted small mb-2"><%= latestBooks[j].author ? latestBooks[j].author.firstName + ' ' + latestBooks[j].author.lastName : 'مؤلف غير معروف' %></p>
+                                <a href="/books/<%= latestBooks[j]._id %>" class="btn btn-sm btn-outline-primary rounded-pill w-100">التفاصيل</a>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#desktopBooksCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#desktopBooksCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+
+<div id="mobileBooksCarousel" class="carousel carousel-dark slide shadow-sm rounded-4 bg-light p-2 d-block d-md-none" 
+     data-bs-ride="carousel" data-bs-wrap="true">
+    
+    <div class="carousel-inner">
+        <% latestBooks.forEach((book, index) => { %>
+            <div class="carousel-item <%= index === 0 ? 'active' : '' %>" data-bs-interval="4000">
+                <div class="px-4 py-3 text-center">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                        <img src="/images/<%= book.cover %>" class="img-fluid mb-3 mx-auto" style="height: 200px; object-fit: contain;" alt="<%= book.title %>">
+                        <h5 class="fw-bold text-dark text-truncate"><%= book.title %></h5>
+                        <p class="text-muted mb-3"><%= book.author ? book.author.firstName + ' ' + book.author.lastName : 'مؤلف غير معروف' %></p>
+                        <a href="/books/<%= book._id %>" class="btn btn-primary rounded-pill w-100">التفاصيل</a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#mobileBooksCarousel" data-bs-slide="prev" style="width: 10%;">
+        <span class="carousel-control-prev-icon" style="width: 1.5rem;"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mobileBooksCarousel" data-bs-slide="next" style="width: 10%;">
+        <span class="carousel-control-next-icon" style="width: 1.5rem;"></span>
+    </button>
+</div>
+
+<!-- قسم التصفح حسب القسم -->
+<div class="text-center mt-5">
+    <h3 class="fw-bold">تصفح حسب القسم</h3>
+    <p class="text-muted">اختر المجال الذي تحبه</p>
+</div>
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-3 mb-5">
+    <% const categories=[ 
+        { name: 'برمجة', icon: '💻' ,color: 'bg-primary-subtle' },
+        { name: 'علوم', icon: '🔬', color: 'bg-success-subtle' },
+        { name: 'أدب', icon: '📖', color: 'bg-info-subtle' },
+        { name: 'تاريخ', icon: '📜', color: 'bg-warning-subtle' },
+        { name: 'تطوير ذات', icon: '🚀', color: 'bg-danger-subtle' }
+    ] %>
+    <% categories.forEach(cat => { %>
+        <div class="col ">
+            <a href="/books?category=<%= cat.name %>" class="text-decoration-none ">
+                <div class="card border-0 shadow-sm text-center rounded-4 p-3 h-100 category-card <%=cat.color%>">
+                    <div class="fs-2 mb-2">
+                        <%= cat.icon %>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-0 title"><%= cat.name %></h5>
+                </div>
+            </a>
+        </div>
+    <% }) %>
+</div>
+
+<!-- 💡 لماذا نحن -->
+<div class="text-center">
+    <h3 class="fw-bold">لماذا <span class="text-primary">بيت الكتب؟</span></h3>
+</div>
+
+<div class="row g-4 text-center">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <div class="fs-1 mb-3">📖</div>
+            <h5 class="fw-bold">مكتبة واسعة</h5>
+            <p class="text-muted small">الكثير من الكتب في مختلف المجالات</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <div class="fs-1 mb-3">🔍</div>
+            <h5 class="fw-bold">بحث سريع</h5>
+            <p class="text-muted small">اعثر على أي كتاب بسهولة</p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 h-100">
+            <div class="fs-1 mb-3">💖</div>
+            <h5 class="fw-bold">تجربة رائعة</h5>
+            <p class="text-muted small">واجهة بسيطة ومريحة للمستخدم</p>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <h3 class="fw-bold text-center mb-4">الأسئلة الشائعة</h3>
+            <div class="accordion accordion-flush shadow-sm rounded-4 overflow-hidden" id="accordionFAQ">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            ما هي سياسة الشحن لدى بيت الكتب
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body text-muted">
+                            يتم التوصيل خلال 24 ساعة بعد اعطائنا العنوان ورقم التواصل. نقدم خدمة التوصيل السريع الأمن المجاني لضمان وصول كتبك في الوقت المحدد وبحالة ممتازة. 
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            نسيت كلمة المرور، ماذا أفعل؟
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body text-muted">
+                            يمكنك الضغط على "نسيت كلمة المرور" في صفحة تسجيل الدخول، وسنرسل لك رابطاً لإعادة تعيينها عبر بريدك الإلكتروني.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            كيف يمكنني البحث عن كتاب معين؟
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+                        <div class="accordion-body text-muted">
+                            يمكنك استخدام شريط البحث الموجود في أعلى صفحة الكتب وكتابة اسم الكتاب، اسم المؤلف، أو حتى التصنيف لتظهر لك النتائج فوراً.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("layout/footer") %>

@@ -1,0 +1,101 @@
+<%- include("../layout/header.ejs") %>
+
+<div class="container-fluid mt-3" dir="rtl">
+    <% if (query && query.success) { %>
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <%= query.success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <% if (query && query.error) { %>
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <%= query.error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+</div>
+
+
+<div class="container-fluid py-4" dir="rtl">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-dark"><i class="bi bi-cart-check-fill text-primary me-2"></i> إدارة الطلبات</h3>
+        <span class="badge bg-primary rounded-pill px-3 py-2">إجمالي الطلبات: <%= orders.length %></span>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 text-end">
+                <thead class="bg-light text-dark">
+                    <tr>
+                        <th class="py-3 border-0">العميل</th>
+                        <th class="py-3 border-0">الكتب المطلوبة</th>
+                        <th class="py-3 border-0">الإجمالي</th>
+                        <th class="py-3 border-0">الحالة</th>
+                        <th class="py-3 border-0">التاريخ</th>
+                        <th class="py-3 text-center border-0">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach(order => { %>
+                        <tr>
+                            <td class="py-3">
+                                <div class="fw-bold"><%= order.userId ? order.userId.username : 'مستخدم محذوف' %></div>
+                                <div class="small text-muted"><%= order.phone %></div>
+                                <div class="small text-muted"><i class="bi bi-geo-alt"></i> <%= order.address %></div>
+                            </td>
+                            <td>
+                                <ul class="list-unstyled mb-0 small">
+                                    <% order.books.forEach(item => { %>
+                                        <li>• <%= item.bookId ? item.bookId.title : 'كتاب غير موجود' %> (x<%= item.quantity %>)</li>
+                                    <% }) %>
+                                </ul>
+                            </td>
+                            <td><span class="fw-bold text-success"><%= order.totalPrice %>$</span></td>
+                            <td>
+                                <% let badgeClass = order.status === 'تم التسليم' ? 'bg-success' : (order.status === 'ملغي' ? 'bg-danger' : 'bg-warning text-dark'); %>
+                                <span class="badge <%= badgeClass %> rounded-pill px-3"><%= order.status %></span>
+                            </td>
+                            <td class="small text-muted"><%= new Date(order.createdAt).toLocaleDateString('ar-EG') %></td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#statusModal<%= order._id %>">
+                                        تغيير الحالة
+                                    </button>
+                                    
+                                    <form action="/admin/orders/delete/<%= order._id %>" method="POST" class="m-0">
+                                        <button class="btn btn-sm btn-outline-danger rounded-pill border-0" onclick="return confirm('هل أنت متأكد من حذف الطلب؟')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <div class="modal fade" id="statusModal<%= order._id %>" tabindex="-1">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content rounded-4 border-0 shadow">
+                                    <div class="modal-body p-4 text-center">
+                                        <h6 class="fw-bold mb-3">تحديث حالة الطلب</h6>
+                                        <form action="/admin/orders/update-status/<%= order._id %>" method="POST">
+                                            <select name="status" class="form-select rounded-3 mb-3 text-center">
+                                                <option value="قيد المعالجة" <%= order.status === 'قيد المعالجة' ? 'selected' : '' %>>قيد المعالجة</option>
+                                                <option value="تم التسليم" <%= order.status === 'تم التسليم' ? 'selected' : '' %>>تم التسليم</option>
+                                                <option value="ملغي" <%= order.status === 'ملغي' ? 'selected' : '' %>>ملغي</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold">حفظ التغيير</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<%- include("../layout/footer.ejs") %>

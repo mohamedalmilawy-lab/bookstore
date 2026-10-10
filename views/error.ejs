@@ -1,0 +1,35 @@
+<%- include("layout/header") %>
+<%- include("layout/navbar") %>
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;" dir="rtl">
+    <div class="text-center p-5 shadow-sm rounded-5 bg-white border">
+        
+        
+    
+        <% if(status === 404) { %>
+            <img src="/images/no-results.png" style="max-width: 170px;" alt="No Results">  
+            <p class="text-muted fs-5 mb-4">
+                عذرا الصفحة المطلوبة غير موجودة
+            </p>
+        <% } else { %>
+        <div class="mb-4">
+            <i class="fas fa-exclamation-circle text-danger" style="font-size: 5rem;"></i>
+        </div>
+        <p class="text-muted fs-5 mb-4">
+                حدث خطأ بسيط
+        </p>
+        <% } %>
+
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="/" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                الرجوع للرئيسية
+            </a>
+        </div>
+
+        <div class="mt-5 border-top pt-3">
+            <small class="text-secondary small">إذا تكرر هذا الخطأ، يرجى <a href="/contact" class="">التواصل مع الإدارة</a>.</small>
+        </div>
+    </div>
+</div>
+
+<%- include("layout/footer") %>

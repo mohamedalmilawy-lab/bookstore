@@ -1,0 +1,136 @@
+<%- include("layout/header") %>
+<%- include("layout/navbar") %>
+
+<div class="container py-5" dir="rtl">
+    
+    <div class="text-center mb-5">
+        <h1 class="fw-bold text-dark mb-2">اتصل بنا</h1>
+        <p class="text-muted">نحن هنا لمساعدتك، لا تتردد في التواصل معنا في أي وقت.</p>
+    </div>
+
+    <div class="row g-4">
+        
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-primary text-white text-center py-3 border-0 rounded-top-4">
+                    <h4 class="fw-bold mb-0">أرسل لنا رسالة</h4>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    <% if (typeof success !== 'undefined' && success) { %>
+                        <div class="alert alert-success border-0 shadow-sm mb-4">
+                            <%= success %>
+                        </div>
+                    <% } %>
+
+                    <% if (typeof error !== 'undefined' && error) { %>
+                        <div class="alert alert-danger border-0 shadow-sm mb-4">
+                            <%= error %>
+                        </div>
+                    <% } %>
+
+                    <form action="/contact" method="POST">
+                        <% if(!locals.user) { %>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label fw-bold text-secondary small">الاسم الكامل</label>
+                                    <input type="text" class="form-control form-control-lg bg-light border-0 shadow-none"
+                                        id="name" name="name" placeholder="أدخل اسمك" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label fw-bold text-secondary small">البريد الإلكتروني</label>
+                                    <input type="email" class="form-control form-control-lg bg-light border-0 shadow-none"
+                                        id="email" name="email" placeholder="name@example.com" required>
+                                </div>
+                            </div>
+                        <% } %>
+
+                        <div class="mb-4">
+                            <label for="subject" class="form-label fw-bold text-secondary small">الموضوع</label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0 shadow-none"
+                                id="subject" name="subject" placeholder="موضوع الرسالة" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="message" class="form-label fw-bold text-secondary small">الرسالة</label>
+                            <textarea class="form-control bg-light border-0 shadow-none"
+                                id="message" name="message" rows="5" placeholder="اكتب رسالتك هنا..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill py-2 fw-bold shadow-sm">
+                            إرسال الرسالة
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="d-flex flex-column h-100 gap-4">
+                
+                <div class="card border-0 shadow-sm rounded-4 flex-fill">
+                    <div class="card-header bg-primary text-white py-3 border-0 rounded-top-4">
+                        <h5 class="card-title mb-0 fw-bold text-center">معلومات التواصل</h5>
+                    </div>
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-light p-3 rounded-circle ms-3 text-primary lh-1">
+                                <i class="fas fa-envelope fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">البريد الإلكتروني</h6>
+                                <span class="text-muted" dir="ltr">book.house@gmail.com</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-light p-3 rounded-circle ms-3 text-primary lh-1">
+                                <i class="fas fa-phone fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">الهاتف</h6>
+                                <span class="text-muted" dir="ltr">+963959654245</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <div class="bg-light p-3 rounded-circle ms-3 text-primary lh-1">
+                                <i class="fas fa-map-marker-alt fs-5"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">العنوان</h6>
+                                <span class="text-muted">حماة - شارع القوتلي - بجانب شركة الهرم للحوالات</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-primary text-white py-3 border-0 rounded-top-4">
+                        <h5 class="card-title mb-0 fw-bold text-center">تابعنا على</h5>
+                    </div>
+                    <div class="card-body p-4 text-center">
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="#" class="btn btn-outline-primary rounded-circle p-3 lh-1">
+                                <i class="fab fa-whatsapp fs-5"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary rounded-circle p-3 lh-1">
+                                <i class="fab fa-facebook fs-5"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary rounded-circle p-3 lh-1">
+                                <i class="fab fa-instagram fs-5"></i>
+                            </a>
+                            <a href="#" class="btn btn-outline-primary rounded-circle p-3 lh-1">
+                                <i class="fab fa-twitter fs-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<%- include("layout/footer") %>

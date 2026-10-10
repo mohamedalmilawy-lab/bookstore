@@ -1,0 +1,71 @@
+<%- include("../layout/header") %>
+<%- include("../layout/navbar") %>
+
+<div class="container min-vh-100 d-flex align-items-center justify-content-center pt-5 pb-5">
+    <div class="col-12 col-md-8 col-lg-5">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            
+            <div class="card-header bg-primary text-white text-center py-4 border-0">
+                <h3 class="fw-bold mb-1">انضم إلى بيت الكتب 📚</h3>
+                <p class="small text-white-50 mb-0">أنشئ حسابك وابدأ رحلتك في عالمنا</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5" dir="rtl">
+                
+                <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                    <div class="alert alert-danger rounded-3 border-0 shadow-sm mb-4">
+                        <%= errorMessage %>
+                    </div>
+                <% } %>
+
+                <form method="POST" action="/auth/register">
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-secondary small">اسم المستخدم</label>
+                        <input type="text" name="username" class="form-control form-control-lg bg-light border-0 shadow-sm" 
+                               placeholder="مثال: mohamed_99" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-secondary small">البريد الإلكتروني</label>
+                        <input type="email" name="email" class="form-control form-control-lg bg-light border-0 shadow-sm" 
+                               placeholder="example@mail.com" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-secondary small">كلمة المرور</label>
+                        <input type="password" name="password" class="form-control form-control-lg bg-light border-0 shadow-sm" 
+                               placeholder="أدخل كلمة المرور" required>
+                        <div class="form-text mt-2 small text-muted">استخدم 8 أحرف على الأقل.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-secondary small">تأكيد كلمة المرور</label>
+                        <input type="password" name="confirmPassword" class="form-control form-control-lg bg-light border-0 shadow-sm" 
+                               placeholder="أدخل كلمة المرور مرة أخرى" required>
+                    </div>
+
+                    <div class="d-grid">
+                        <button class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm">
+                            إنشاء الحساب الآن
+                        </button>
+                    </div>
+
+                </form>
+
+                <div class="text-center mt-4 pt-2">
+                    <p class="text-muted small mb-0">
+                        لديك حساب بالفعل؟ 
+                        <a href="/auth/login" class="text-primary fw-bold text-decoration-none">تسجيل الدخول</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-light border-0 py-3 text-center">
+                <span class="text-muted small">بإنشاء حسابك، أنت توافق على شروط الخدمة</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("../layout/footer") %>

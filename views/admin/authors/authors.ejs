@@ -1,0 +1,163 @@
+<%- include("../layout/header.ejs") %>
+
+<div class="container-fluid mt-3" dir="rtl">
+    <% if (query && query.success) { %>
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <%= query.success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <% if (query && (query.errorC || query.errorU)) { %>
+        <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <%= query.errorC || query.errorU %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+</div>
+
+<div class="container-fluid py-4" dir="rtl">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+        <h3 class="fw-bold text-dark m-0">
+            <i class="bi bi-people-fill text-primary me-2"></i> إدارة المؤلفين
+        </h3>
+        <button class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold w-md-auto" data-bs-toggle="modal" data-bs-target="#addAuthorModal">
+            <i class="bi bi-person-plus-fill me-1"></i> إضافة مؤلف جديد
+        </button>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+        <div class="card-body p-4">
+            <form action="/admin/authors" method="GET" class="row g-3 align-items-end">
+                <div class="col-md-9">
+                    <label class="form-label small fw-bold text-dark"><i class="bi bi-search me-1"></i> ابحث عن مؤلف</label>
+                    <input type="text" name="search" class="form-control rounded-pill bg-light border-0 px-3" placeholder="اسم المؤلف..." value="<%= query.search || '' %>">
+                </div>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary rounded-pill flex-grow-1 fw-bold shadow-sm">بحث</button>
+                    <a href="/admin/authors" class="btn btn-outline-light text-dark rounded-pill border shadow-sm px-3">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 text-end text-nowrap">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th class="py-3 border-0">المؤلف</th>
+                        <th class="py-3 border-0">عدد الكتب</th>
+                        <th class="py-3 text-center border-0">العمليات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (authors.length > 0) { %>
+                        <% authors.forEach(author => { %>
+                            <tr>
+                                <td class="px-4 py-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm ms-2 flex-shrink-0" style="width: 45px; height: 45px; font-size: 1.2rem; font-weight: bold;">
+                                            <%= author.firstName.charAt(0).toUpperCase() %>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-dark"><%= author.firstName %> <%= author.lastName %></div>
+                                            <div class="small text-muted">ID: #<%= author._id.toString().slice(-6).toUpperCase() %></div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-info-subtle text-info border rounded-pill px-3">
+                                        <%=  author.booksCount || 0 %> كتاب
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <button class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-bold" data-bs-toggle="collapse" data-bs-target="#editAuthorRow<%= author._id %>">
+                                            <i class="bi bi-pencil-square"></i> تعديل
+                                        </button>
+                                        <form action="/admin/authors/delete/<%= author._id %>" method="POST" class="m-0">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold" onclick="return confirm('هل أنت متأكد من حذف هذا المؤلف؟ قد يؤثر ذلك على الكتب المرتبطة به.')">
+                                                <i class="bi bi-trash3"></i> حذف
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr class="collapse" id="editAuthorRow<%= author._id %>">
+                                <td colspan="4" class="p-0 border-bottom shadow-inner">
+                                    <div class="bg-light p-4 border-top">
+                                        <form action="/admin/authors/update/<%= author._id %>" method="POST" class="row g-3">
+                                            <div class="col-md-4">
+                                                <label class="small fw-bold mb-1">الاسم الأول</label>
+                                                <input type="text" name="firstName" class="form-control rounded-3" value="<%= author.firstName %>" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="small fw-bold mb-1">الكنية</label>
+                                                <input type="text" name="lastName" class="form-control rounded-3" value="<%= author.lastName %>" required>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="small fw-bold mb-1">الجنسية</label>
+                                                <input type="text" name="nationality" class="form-control rounded-3" value="<%= author.nationality %>" required>
+                                            </div>
+
+                                            <div class="col-12 mt-3 d-flex gap-2 justify-content-end">
+                                                <button type="button" class="btn btn-secondary btn-sm px-4 rounded-pill" data-bs-toggle="collapse" data-bs-target="#editAuthorRow<%= author._id %>">إلغاء</button>
+                                                <button type="submit" class="btn btn-success btn-sm px-4 rounded-pill fw-bold">حفظ التعديلات</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="4" class="text-center py-5 text-muted">لا يوجد مؤلفون حالياً.</td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addAuthorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow rounded-4">
+            <div class="modal-header border-0 bg-primary text-white rounded-top-4">
+                <h5 class="modal-title fw-bold"><i class="bi bi-person-plus me-2"></i> إضافة مؤلف جديد</h5>
+                <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form action="/admin/authors/add" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">الاسم الأول</label>
+                            <input type="text" name="firstName" class="form-control rounded-3 bg-light border-0" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-secondary">الكنية</label>
+                            <input type="text" name="lastName" class="form-control rounded-3 bg-light border-0" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-secondary">الجنسية</label>
+                            <input type="text" name="nationality" class="form-control rounded-3 bg-light border-0">
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold flex-grow-1 shadow-sm">حفظ البيانات</button>
+                        <button type="button" class="btn btn-light rounded-pill px-4 fw-bold border" data-bs-dismiss="modal">إلغاء</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("../layout/footer.ejs") %>

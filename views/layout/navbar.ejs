@@ -1,0 +1,102 @@
+<header class="">
+    <nav class="bg-dark navbar navbar-expand-lg navbar-dark shadow fixed-top py-2" dir="rtl">
+        <div class="container">
+
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <span class="fw-bold fs-4 px-2 text-white"><i class="fas fa-book-reader text-info me-2"></i>بيت الكتب</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 px-3 nav-underline">
+                    <li class="nav-item">
+                        <a class="nav-link <%= path === '/' ? 'active text-primary' : '' %>" href="/">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <%= path === '/books' ? 'active text-primary' : '' %>" href="/books">الكتب</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <%= path === '/about' ? 'active text-primary' : '' %>" href="/about">حولنا</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <%= path === '/contact' ? 'active text-primary' : '' %>" href="/contact">اتصل بنا</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-3">
+                    
+                    <a href="<%= locals.user ? '/cart' : '/auth/login' %>" class="nav-link position-relative text-white fs-4 <%= path === '/cart' ? 'text-primary' : '' %>">
+                        <i class="bi bi-cart3"></i>
+                        <% if (locals.user && user.cart && user.cart.length > 0) { %>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                                  style="font-size: 0.6rem; padding: 0.3em 0.5em;">
+                                <%= user.cart.length %>
+                            </span>
+                        <% } %>
+                    </a>
+
+                    <a href="<%= locals.user ? '/favorites' : '/auth/login' %>" class="nav-link position-relative text-white fs-4 <%= path === '/favorites' ? 'text-primary' : '' %>">
+                        <i class="bi bi-heart"></i>
+                        <% if (locals.user && user.favorites && user.favorites.length > 0) { %>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                                style="font-size: 0.6rem; padding: 0.3em 0.5em;">
+                                <%= user.favorites.length %>
+                            </span>
+                        <% } %>
+                    </a>
+
+                    <% if (locals.user) { %>
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle fw-bold text-white d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle fs-4 ms-2">&nbsp;</i>
+                                <span><%= user.username %></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item py-2" href="/users/profile/<%= user._id || user.id %>">
+                                        <i class="bi bi-person ms-2 text-primary"></i>الملف الشخصي
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="/users/orders/<%= user._id || user.id %>">
+                                        <i class="bi bi-bag-check ms-2 text-success"></i> طلباتي السابقة
+                                    </a>
+                                </li>
+
+                                <% if (user.isAdmin) { %>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item py-2 text-danger fw-bold" href="/admin/dashboard">
+                                            <i class="bi bi-speedometer2 ms-2"></i> لوحة التحكم
+                                        </a>
+                                    </li>
+                                <% } %>
+
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 text-secondary" href="/auth/logout">
+                                        <i class="bi bi-box-arrow-right ms-2"></i> تسجيل الخروج
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    <% } else { %>
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="/auth/login" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+                                تسجيل الدخول
+                            </a>
+                            
+                            <a href="/auth/register" class="btn btn-outline-light rounded-pill px-3 fw-bold">
+                                حساب جديد
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</header>

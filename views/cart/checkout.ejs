@@ -1,0 +1,114 @@
+<%- include("../layout/header") %>
+<%- include("../layout/navbar") %>
+
+<div class="container py-5 mt-5" dir="rtl">
+
+    <!-- 🔴 رسالة خطأ -->
+    <% if (error) { %>
+        <div class="alert alert-danger rounded-3 mb-4">
+            <i class="fas fa-exclamation-circle me-2"></i> <%= error %>
+        </div>
+    <% } %>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <!-- 📍 معلومات -->
+            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                <h5 class="fw-bold text-primary mb-3">
+                    <i class="fas fa-info-circle me-2"></i> معلومات التوصيل
+                </h5>
+
+                <p class="text-muted mb-0">
+                    يمكنك اختيار التوصيل إلى منزلك أو استلام الطلب من المركز.
+                </p>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 p-4">
+                <h5 class="fw-bold mb-4">
+                    <i class="fas fa-truck text-primary me-2"></i> بيانات التوصيل
+                </h5>
+
+                <form action="/cart/place" method="POST" id="checkoutForm">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">العنوان:</label>
+                        <input type="text" name="address" class="form-control py-2" placeholder="مثال: حماه - الجلاء" value="<%= typeof old !== 'undefined' ? old.address : '' %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">رقم الهاتف:</label> 
+                        <input type="tel" name="phone" class="form-control py-2 text-start" placeholder="09xxxxxxxx" value="<%= typeof old !== 'undefined' ? old.phone : '' %>" dir="ltr" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">ملاحظات:(اختياري)</label>
+                        <textarea name="notes" class="form-control" rows="3" placeholder="أي تفاصيل إضافية..."><%= typeof old !== 'undefined' ? old.notes : '' %></textarea>
+                    </div>
+
+                    <!--  زر للموبايل -->
+                    <div class="d-lg-none">
+                        <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold">
+                            تأكيد الطلب
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 100px;">
+
+                <h5 class="fw-bold mb-4 border-bottom pb-3">ملخص الطلب</h5>
+
+                <% if (cart && cart.length > 0) { %>
+                    <div class="mb-3">
+                        <% cart.forEach(item => { if(item.bookId){ %>
+                            <div class="d-flex justify-content-between small mb-2">
+                                <span><%= item.bookId.title %> × <%= item.quantity %></span>
+                                <span class="fw-bold">
+                                    <%= (item.bookId.price * item.quantity).toLocaleString() %> $
+                                </span>
+                            </div>
+                        <% }}) %>
+                    </div>
+                    <hr>
+                <% } %>
+
+                <!-- 💰 السعر -->
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">الإجمالي:</span>
+                    <span class="fw-bold">
+                        <%= totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 }) %> $
+                    </span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">التوصيل:</span>
+                    <span class="text-success fw-bold">مجاني</span>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="fw-bold">المجموع النهائي:</span>
+                    <span class="fw-bold text-primary fs-5">
+                        <%= totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 }) %> $
+                    </span>
+                </div>
+
+                <button type="submit" form="checkoutForm"
+                        class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm">
+                    إتمام الشراء
+                </button>
+
+                <p class="text-center mt-3 small text-muted">
+                    <i class="fas fa-shield-alt"></i> الدفع عند الاستلام
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<%- include("../layout/footer") %>

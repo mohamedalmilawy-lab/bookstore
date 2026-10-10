@@ -1,0 +1,39 @@
+<%- include("../layout/header") %>
+<%- include("../layout/navbar") %>
+
+
+    <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+        <div class="col-md-6 col-lg-5 text-center">
+            <div class="card border-0 shadow-lg rounded-4 p-5 bg-white">
+                
+                <div class="display-1 text-primary mb-4">
+                    <i class="bi bi-envelope-check"></i> 📧
+                </div>
+
+                <h2 class="fw-bold mb-3">تفقد بريدك الإلكتروني!</h2>
+                
+                <p class="text-secondary fs-5 mb-4">
+                    لقد أرسلنا رابطاً لإعادة تعيين كلمة المرور إلى بريدك. يرجى مراجعة صندوق الوارد (أو مجلد البريد غير الهام) واتباع التعليمات.
+                </p>
+
+                <div class="alert alert-info border-0 rounded-3 small mb-4 py-3">
+                    <i class="fas fa-info-circle ms-2"></i> الرابط صالح لمدة 10 دقائق فقط لضمان أمان حسابك.
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a href="/" class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm">
+                        العودة للرئيسية
+                    </a>
+                    <a href="/auth/forgot-password" class="btn btn-link text-decoration-none text-muted small mt-2">
+                        لم يصلك البريد؟ أعد المحاولة
+                    </a>
+                </div>
+            </div>
+            
+            <p class="text-muted mt-4 small">© 2026 بيت الكتب - جميع الحقوق محفوظة</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<footer class="bg-dark text-white pt-5 mt-5 border-top border-secondary shadow-lg">
+  <div class="container">
+    <div class="row g-4 text-center text-md-start" dir="rtl">
+
+      <div class="col-md-4">
+        <h5 class="fw-bold mb-3 text-primary">📚 بيت الكتب</h5>
+        <p class="text-secondary small">
+          منصتك الأولى لاستكشاف عالم المعرفة. نقدم لك مجموعة مختارة من أفضل الكتب لنجعل القراءة تجربة يومية ممتعة.
+        </p>
+      </div>
+
+      <div class="col-md-4">
+        <h5 class="fw-bold mb-3">روابط هامة</h5>
+        <ul class="list-unstyled p-0">
+          <li class="mb-2"><a href="/" class="text-secondary text-decoration-none small">🏠 الرئيسية</a></li>
+          <li class="mb-2"><a href="/books" class="text-secondary text-decoration-none small">📖 الكتب</a></li>
+          <li class="mb-2"><a href="/about" class="text-secondary text-decoration-none small">ℹ️ حولنا</a></li>
+          <li class="mb-2"><a href="/contact" class="text-secondary text-decoration-none small">📞 اتصل بنا</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-4">
+        <h5 class="fw-bold mb-3">تواصل معنا</h5>
+        <p class="text-secondary small mb-2">
+          <i class="bi bi-envelope text-primary me-2"></i> book.house@gmail.com
+        </p>
+
+        <div class="d-flex justify-content-center justify-content-md-start gap-2 mt-3">
+          <a href="#" class="btn btn-outline-info rounded-circle"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="btn btn-outline-info rounded-circle"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="btn btn-outline-info rounded-circle"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="btn btn-outline-info rounded-circle"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4 border-secondary opacity-50">
+
+    <div class="text-center small text-secondary pb-4">
+      © <span id="year"></span> جميع الحقوق محفوظة لدى
+      <span class="text-primary fw-bold">بيت الكتب</span>
+    </div>
+  </div>
+</footer>
+
+<!-- زر الشات -->
+<button id="chat-circle"
+  class="btn btn-primary rounded-circle shadow-lg position-fixed bottom-0 start-0 m-4 d-flex align-items-center justify-content-center border-0 ">
+  <i class="bi bi-robot fs-4 p-1"></i>
+</button>
+
+<!-- صندوق الشات -->
+<div id="chat-box" class="card shadow-lg d-none position-fixed bottom-0 start-0 m-5 border-0 rounded-4"
+  style="width: 350px; height: 500px;">
+
+  <div
+    class="card-header bg-primary text-white d-flex justify-content-between align-items-center py-3 border-0 rounded-top-4">
+    <span class="fw-bold small">
+      <i class="bi bi-stars text-warning"></i> مساعد بيت الكتب
+    </span>
+    <button type="button" class="btn-close btn-close-white" id="close-chat"></button>
+  </div>
+
+  <div id="chat-messages" class="card-body bg-light overflow-auto p-3" style="max-height: 350px;">
+
+    <div class="text-start mb-3" dir="rtl">
+      <div class="d-inline-block p-2 px-3 rounded-3 shadow-sm bg-white text-dark small border">
+        أهلاً بك في <strong>بيت الكتب</strong>! 📚
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card-footer bg-white border-0 py-3 rounded-bottom-4">
+    <div class="input-group bg-light rounded-pill p-1 border">
+      <input type="text" id="user-input" class="form-control border-0 bg-transparent shadow-none small px-3"
+        placeholder="اسألني ما تشاء..." dir="rtl">
+
+      <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center"
+        onclick="sendMessage()">
+        <i class="bi bi-send-fill"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="../../js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
